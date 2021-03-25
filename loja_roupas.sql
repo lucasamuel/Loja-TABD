@@ -411,9 +411,6 @@ $$ LANGUAGE plpgsql;
 SELECT * FROM MostrarTotalVenda();
 
 
---CREATE FUNCTION atualizaprecoprodutos()
-
-
 CREATE FUNCTION ProdMaisLucro(data_venda DATE)
 RETURNS TABLE (id_produto INT, valor_vtotal NUMERIC(10,2))
 $$ 

@@ -1,11 +1,9 @@
---ENTREGA II - 18/03/2021
---ALUNO: Lucas Samuel Araújo Silva
+---ENTREGA III - 25/03/2021
+---ALUNO: Lucas Samuel Araújo Silva
 
 SET SCHEMA 'loja_roupas';
 
------------------------------------------------------------------------------------------
-------------------------------------TABELAS----------------------------------------------
------------------------------------------------------------------------------------------
+---TABLES
 
 CREATE TABLE caixa (
     id_caixa INT PRIMARY KEY,
@@ -119,24 +117,6 @@ CREATE TABLE telefone (
     FOREIGN KEY (id_fornecedor) REFERENCES fornecedor(id_fornecedor)
 );
 
-CREATE TABLE pagamento_venda (
-    id_pagamento_venda INT PRIMARY KEY,
-    id_venda INT,
-    id_forma_pagamento INT,
-    valor_pvenda NUMERIC (10,2),
-    FOREIGN KEY (id_venda) REFERENCES venda(id_venda),
-    FOREIGN KEY (id_forma_pagamento) REFERENCES forma_pagamento(id_forma_pagamento)
-);
-
-CREATE TABLE pagamento_compra(
-   	id_pagamento_compra INT PRIMARY KEY,
-    valor_pcompra NUMERIC (10,2),
-	id_compra INT,
-   	id_forma_pagamento INT,
-   	FOREIGN KEY (id_compra) REFERENCES compra(id_compra),
-   	FOREIGN KEY (id_forma_pagamento) REFERENCES forma_pagamento(id_forma_pagamento)
- );
-
 CREATE TABLE item_devolucao (
  	id_devolucao INT PRIMARY KEY,
 	descricao_devolucao VARCHAR(100),
@@ -148,9 +128,8 @@ CREATE TABLE item_devolucao (
 );
 
 
------------------------------------------------------------------------------------------
-------------------------------------INSERTS----------------------------------------------
------------------------------------------------------------------------------------------
+--INSERTS
+
 
 INSERT INTO caixa (id_caixa, saldo)
 VALUES (1, 500);
@@ -171,11 +150,11 @@ VALUES (1, 'Simonitti LTDA.', '11. 222. 121/1111-22'),
 
 INSERT INTO compra (id_compra, id_funcionario, id_fornecedor, nota_cfiscal, valor_ctotal, data_compra, hora_venda)
 VALUES (1, 1, 1, '999999', 1000, '2021/02/12', '09:00:00'),
-       (2, 1, 2, '111111', 700, '2021/02/13', '08:30:00'),
-       (3, 2, 3, '222222', 750, '2021/02/13', '16:15:00'),
-       (2, 1, 2, '111111', 700, '2021/02/13', '08:30:00'),
-       (2, 1, 2, '111111', 700, '2021/02/13', '08:30:00'),
-       (2, 1, 2, '111111', 700, '2021/02/13', '08:30:00');
+       (2, 1, 2, '111111', 800, '2021/02/13', '08:30:00'),
+       (3, 2, 3, '222222', 750, '2021/02/17', '16:15:00'),
+       (4, 2, 1, '111311', 400, '2021/03/04', '09:30:00'),
+       (5, 2, 2, '111141', 600, '2021/03/04', '15:30:00'),
+       (6, 1, 3, '121111', 700, '2021/03/05', '10:30:00');
 
 INSERT INTO produto
 VALUES (1, 'P', 'Cinza', 40, 70, 30, 'Camiseta', 'Air Force'),
@@ -187,13 +166,13 @@ VALUES (1, 'P', 'Cinza', 40, 70, 30, 'Camiseta', 'Air Force'),
 
 INSERT INTO item_compra
 VALUES (1, 40, 20, 100, 100, 1, 1),
-       (2, 45, 15, 25, 0, 2, 2),
-       (3, 45, 15, 25, 0, 2, 2),
-       (4, 45, 15, 25, 0, 2, 2),
-       (5, 45, 15, 25, 0, 2, 2),
-       (6, 45, 15, 25, 0, 2, 2),
-       (7, 45, 15, 25, 0, 2, 2),
-       (8, 45, 15, 25, 0, 2, 2);
+       (2, 45, 25, 25, 0, 2, 1),
+       (3, 35, 20, 50, 50, 3, 1),
+       (4, 50, 35, 60, 40, 3, 2),
+       (5, 30, 35, 40, 30, 4, 2),
+       (6, 25, 45, 50, 40, 4, 3),
+       (7, 55, 33, 35, 0, 5, 4),
+       (8, 30, 15, 25, 30, 5, 4);
 
 INSERT INTO cliente
 VALUES (1, 'Uélio Lopes', '111.111.222-22'),
@@ -203,14 +182,21 @@ VALUES (1, 'Uélio Lopes', '111.111.222-22'),
 INSERT INTO venda (id_venda, id_caixa, id_cliente, valor_vtotal, valor_vpago, valor_vtroco, desconto_venda, nota_vfiscal, data_venda, hora_venda)
 VALUES (1, 1, 1, 80, 80, 0, 0, '123212', '2021/02/28', '09:00:00'),
        (2, 1, 2, 140, 140, 0, 0, '123312', '2021/03/11', '10:30:00'),
-       (3, 1, 3, 110, 110, 0, 0, '123222', '2021/03/11', '13:00:00');
+       (3, 1, 3, 110, 110, 0, 0, '123222', '2021/03/11', '13:00:00'),
+       (4, 1, 3, 110, 110, 0, 0, '123222', '2021/03/11', '13:00:00'),
+       (5, 1, 3, 110, 110, 0, 0, '123222', '2021/03/11', '13:00:00');
 
 
 INSERT INTO item_venda
 VALUES (1, 2, 1, 1, 80),
        (2, 1, 2, 2, 70),
        (3, 4, 3, 1, 70),
-       (4, 3, 3, 1, 60);
+       (4, 3, 3, 1, 60),
+       (5, 4, 4, 1, 70),
+       (6, 5, 5, 2, 110),
+       (7, 4, 4, 1, 70),
+       (8, 4, 3, 1, 70),
+       (9, 4, 3, 1, 70);
 
 INSERT INTO endereco (id_endereco, id_funcionario, id_fornecedor, descricao_endereco)
 VALUES (1, 1, NULL, 'Rua 5, 55, Setor J'),
@@ -224,9 +210,9 @@ VALUES (1, 1, NULL, NULL, '77 99999-9999', 'Celular'),
 INSERT INTO item_devolucao
 VALUES (1, 'Produto muito grande', 1, NULL, 1);
 
----------------------------------------------------------------------------------------------------
------------------------------------------FUNCTIONS-------------------------------------------------
----------------------------------------------------------------------------------------------------
+---FUNCTIONS
+
+---PRODUTO
 
 CREATE FUNCTION insert_produto() RETURNS TRIGGER AS $$
 BEGIN
@@ -236,41 +222,80 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_insertproduto
-AFTER INSERT ON item_compra
+AFTER INSERT ON produto
 FOR EACH ROW
 EXECUTE PROCEDURE insert_produto();
-
--------------------------------------------------------------------------------------------------------
-
-CREATE FUNCTION delete_produto() RETURNS TRIGGER AS $$
-BEGIN
-UPDATE produto SET quantidade_produto = quantidade_produto + OLD.quantidade_produto WHERE id_produto = OLD.id_produto;
-update compra SET valor_ctotal = OLD.preco_unitario * OLD.quatidade_produto WHERE id_compra = OLD.id_compra;
-RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_deleteproduto
-AFTER DELETE ON item_compra
-FOR EACH ROW
-EXECUTE PROCEDURE delete_produto();
-
----------------------------------------------------------------------------------------------------------
 
 CREATE FUNCTION update_produto() RETURNS TRIGGER AS $$
 BEGIN
 UPDATE produto SET quantidade_produto = quantidade_produto - OLD.quantidade_produto WHERE id_produto = OLD.id_produto;
-UPDATE produto SET quantidade_produto = quantidade_produto + NEW.quantidade_produto WHERE id_produto = NEW.id_produto;
 RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_updateproduto
-AFTER DELETE ON item_compra
+AFTER DELETE ON produto
 FOR EACH ROW
 EXECUTE PROCEDURE update_produto();
 
------------------------------------------------------------------------------------------------------------
+CREATE FUNCTION delete_produto() RETURNS TRIGGER AS $$
+BEGIN
+UPDATE produto SET quantidade_produto = quantidade_produto + OLD.quantidade_produto WHERE id_produto = OLD.id_produto;
+update compra SET valor_ctotal = OLD.preco_ivunitario * OLD.quatidade_produto WHERE id_compra = OLD.id_compra;
+RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_deleteproduto
+AFTER DELETE ON produto
+FOR EACH ROW
+EXECUTE PROCEDURE delete_produto();
+
+---COMPRA
+
+CREATE FUNCTION insert_compraproduto() RETURNS TRIGGER AS $$
+BEGIN
+UPDATE produto SET quantidade_produto = quantidade_produto - NEW.quantidade_produto WHERE id_produto = NEW.id_produto;
+UPDATE venda SET valor_ctotal = NEW.quantidade_icompra * NEW.preco_icunitario WHERE id_compra = NEW.id_compra;
+RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_insert_compraproduto
+AFTER INSERT ON item_compra
+FOR EACH ROW
+EXECUTE PROCEDURE insert_compraproduto();
+
+CREATE FUNCTION update_compraproduto() RETURNS TRIGGER AS $$
+BEGIN
+UPDATE produto SET quantidade_produto = quantidade_produto + OLD.quantidade_produto WHERE id_produto = OLD.id_produto;
+RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_compraproduto
+AFTER UPDATE ON item_compra
+FOR EACH ROW
+EXECUTE PROCEDURE update_compraproduto();
+
+
+CREATE FUNCTION delete_compraproduto() RETURNS TRIGGER AS $$
+BEGIN
+UPDATE produto SET quantidade_produto = quantidade_produto + OLD.quantidade_produto WHERE id_produto = OLD.id_produto;
+update venda SET valor_vtotal = OLD.preco_icunitario * OLD.quatidade_produto WHERE id_compra = OLD.id_compra;
+RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_delete_compraproduto
+AFTER DELETE ON item_compra
+FOR EACH ROW
+EXECUTE PROCEDURE delete_compraproduto();
+
+
+---VENDA
+
+
 
 CREATE FUNCTION insert_vendaproduto() RETURNS TRIGGER AS $$
 BEGIN
@@ -281,16 +306,26 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_insert_vendaproduto
-AFTER DELETE ON item_venda
+AFTER INSERT ON item_venda
 FOR EACH ROW
 EXECUTE PROCEDURE insert_vendaproduto();
 
------------------------------------------------------------------------------------------------------------
+CREATE FUNCTION update_vendaproduto() RETURNS TRIGGER AS $$
+BEGIN
+UPDATE produto SET quantidade_produto = quantidade_produto - OLD.quantidade_produto WHERE id_produto = OLD.id_produto;
+RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_vendaproduto
+AFTER UPDATE ON item_venda
+FOR EACH ROW
+EXECUTE PROCEDURE update_vendaproduto();
 
 CREATE FUNCTION delete_vendaproduto() RETURNS TRIGGER AS $$
 BEGIN
 UPDATE produto SET quantidade_produto = quantidade_produto + OLD.quantidade_produto WHERE id_produto = OLD.id_produto;
-update compra SET valor_vtotal = OLD.preco_unitario * OLD.quatidade_produto WHERE id_compra = OLD.id_compra;
+update venda SET valor_vtotal = OLD.preco_ivunitario * OLD.quatidade_produto WHERE id_compra = OLD.id_compra;
 RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
@@ -300,28 +335,9 @@ AFTER DELETE ON item_venda
 FOR EACH ROW
 EXECUTE PROCEDURE delete_vendaproduto();
 
----------------------------------------------------------------------------------------------------------
+---------------
 
-CREATE FUNCTION update_vendaproduto() RETURNS TRIGGER AS $$
-BEGIN
-UPDATE produto SET quantidade_produto = quantidade_produto - OLD.quantidade_produto WHERE id_produto = OLD.id_produto;
-UPDATE produto SET quantidade_produto = quantidade_produto + NEW.quantidade_produto WHERE id_produto = NEW.id_produto;
-RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_update_vendaproduto
-AFTER DELETE ON item_compra
-FOR EACH ROW
-EXECUTE PROCEDURE update_vendaproduto();
-
----------------------------------------------------------------------------------------------------------
-
---TRIGGERS DE COMPRA
-
----------------------------------------------------------------------------------------------------------
-
-CREATE OR REPLACE FUNCTION vendadodia()
+CREATE OR REPLACE FUNCTION vendadodia(data_venda DATE)
 RETURNS TABLE ( nome VARCHAR, data_venda DATE) AS
 $$
 BEGIN
@@ -332,7 +348,7 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM vendadodia();
 
----------------------------------------------------------------------------------------------------------
+
 
 CREATE OR REPLACE FUNCTION produtosabaixoestoque()
 RETURNS TABLE (tipo_produto VARCHAR, marca VARCHAR, quantidade_produto INT) AS
@@ -346,10 +362,9 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM produtosabaixoestoque();
 
-----------------------------------------------------------------------------------------------------------
 
-CREATE FUNCTION clientesquedevem()
-RETURNS TABLE (nome VARCHAR, valor_vtotal NUMERIC(10,2), valor_vpago NUMERIC(10,2)) AS
+
+CREATE FUNCTION clientesquedevem(nome VARCHAR)
 $$ 
 BEGIN
 RETURN QUERY SELECT cliente.nome, venda.valor_vtotal, venda.valor_vpago
@@ -362,10 +377,10 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM clientesquedevem();
 
------------------------------------------------------------------------------------------------------------
+
 
 CREATE FUNCTION produtosmaisvendidos()
-RETURNS TABLE (id_produto INT, tipo_produto VARCHAR)
+
 $$ 
 BEGIN
 RETURN QUERY SELECT produto.tipo_produto, item_venda.id_produto, COUNT(item_venda.id_produto)
@@ -378,9 +393,9 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM produtosmaisvendidos();
 
------------------------------------------------------------------------------------------------------------
 
-CREATE FUNCTION MostrarTotalVenda()
+
+CREATE FUNCTION MostrarTotalVenda(data_venda DATE)
 RETURNS TABLE (valor_vtotal NUMERIC(10,2))
 $$ 
 BEGIN
@@ -395,25 +410,18 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM MostrarTotalVenda();
 
------------------------------------------------------------------------------------------------------------
 
 --CREATE FUNCTION atualizaprecoprodutos()
 
------------------------------------------------------------------------------------------------------------
 
-
---CREATE FUNCTION prodmaisvendcat()
-
------------------------------------------------------------------------------------------------------------
-
-CREATE FUNCTION ProdMaisLucro()
+CREATE FUNCTION ProdMaisLucro(data_venda DATE)
 RETURNS TABLE (id_produto INT, valor_vtotal NUMERIC(10,2))
 $$ 
 BEGIN
-RETURN QUERY SELECT EXTRACT(MONTH FROM data_venda) AS Mes, venda.id_produto, produto.tipo_produto
+RETURN QUERY SELECT EXTRACT(MONTH FROM data_venda) AS Mes, venda.valor_vtotal, venda.id_produto, produto.tipo_produto
 FROM venda, produto
 WHERE produto.id_produto = venda.id_produto
 AND EXTRACT(YEAR FROM data_venda) = CURRENT_DATE
 GROUP BY Mes
-ORDER BY ;
+ORDER BY venda.valor_vtotal DESC;
 

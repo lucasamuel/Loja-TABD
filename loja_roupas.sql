@@ -1,7 +1,7 @@
 ---ENTREGA III - 25/03/2021
 ---ALUNO: Lucas Samuel Araújo Silva
 
-SET SCHEMA 'loja_roupas';
+SET SCHEMA 'loja1';
 
 ---TABLES
 
@@ -292,10 +292,7 @@ AFTER DELETE ON item_compra
 FOR EACH ROW
 EXECUTE PROCEDURE delete_compraproduto();
 
-
 ---VENDA
-
-
 
 CREATE FUNCTION insert_vendaproduto() RETURNS TRIGGER AS $$
 BEGIN
@@ -335,10 +332,10 @@ AFTER DELETE ON item_venda
 FOR EACH ROW
 EXECUTE PROCEDURE delete_vendaproduto();
 
----------------
+----
 
 CREATE OR REPLACE FUNCTION vendadodia(data_venda DATE)
-RETURNS TABLE ( nome VARCHAR, data_venda DATE) AS
+AS
 $$
 BEGIN
 RETURN QUERY SELECT cliente.nome, venda.data_venda FROM cliente, venda WHERE
@@ -346,12 +343,12 @@ cliente.id_cliente = venda.id_cliente;
 END
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM vendadodia();
+--SELECT * FROM vendadodia();
 
 
 
-CREATE OR REPLACE FUNCTION produtosabaixoestoque()
-RETURNS TABLE (tipo_produto VARCHAR, marca VARCHAR, quantidade_produto INT) AS
+CREATE OR REPLACE FUNCTION produtosabaixoestoque(tipo_produto VARCHAR)
+AS
 $$
 BEGIN
 RETURN QUERY SELECT produto.tipo_produto, produto.marca, produto.quantidade_produto
@@ -360,11 +357,12 @@ WHERE produto.quantidade_produto <= 10;
 END
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM produtosabaixoestoque();
+--SELECT * FROM produtosabaixoestoque();
 
 
 
-CREATE FUNCTION clientesquedevem(nome VARCHAR)
+CREATE FUNCTION clientesquedevem(nome VARCHAR) 
+AS
 $$ 
 BEGIN
 RETURN QUERY SELECT cliente.nome, venda.valor_vtotal, venda.valor_vpago
@@ -375,12 +373,12 @@ OR (venda.valor_vpago + venda.desconto_venda) < venda.valor_vtotal;
 END
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM clientesquedevem();
+--SELECT * FROM clientesquedevem('Uélio Lopes');
 
 
 
-CREATE FUNCTION produtosmaisvendidos()
-
+CREATE FUNCTION produtosmaisvendidos(id_produto INT)
+AS
 $$ 
 BEGIN
 RETURN QUERY SELECT produto.tipo_produto, item_venda.id_produto, COUNT(item_venda.id_produto)
@@ -391,12 +389,12 @@ ORDER BY item_venda.id_produto DESC;
 END
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM produtosmaisvendidos();
+--SELECT * FROM produtosmaisvendidos(2);
 
 
 
 CREATE FUNCTION MostrarTotalVenda(data_venda DATE)
-RETURNS TABLE (valor_vtotal NUMERIC(10,2))
+AS
 $$ 
 BEGIN
 RETURN QUERY SELECT EXTRACT(MONTH FROM data_venda) AS Mes
@@ -408,12 +406,11 @@ ORDER BY Mes;
 END
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM MostrarTotalVenda();
+--SELECT * FROM MostrarTotalVenda();
 
 
 CREATE FUNCTION ProdMaisLucro(data_venda DATE)
-RETURNS TABLE (id_produto INT, valor_vtotal NUMERIC(10,2))
-$$ 
+AS $$ 
 BEGIN
 RETURN QUERY SELECT EXTRACT(MONTH FROM data_venda) AS Mes, venda.valor_vtotal, venda.id_produto, produto.tipo_produto
 FROM venda, produto
@@ -422,3 +419,6 @@ AND EXTRACT(YEAR FROM data_venda) = CURRENT_DATE
 GROUP BY Mes
 ORDER BY venda.valor_vtotal DESC;
 
+$$ LANGUAGE plpgsql;
+
+--SELECT * FROM MostrarTotalVenda();

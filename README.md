@@ -1,10 +1,10 @@
 # Loja de Roupas -TABD
 
-Banco de Dados desenvolvido pra discpiplina de Tópicos Avançados em Bando de Dados
+Banco de Dados desenvolvido pra discpiplina de Tópicos Avançados em Bando de Dados.
 
 ## Equipe
 
-Lucas Samuel Araújo Silva
+Lucas Samuel Araújo Silva.
 
 ## Modelo Entidade Relacional
 
